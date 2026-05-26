@@ -20,16 +20,17 @@ An AI-powered analytics platform with natural language SQL generation, Python co
 ## 🖥️ Screenshots
 
 ### Landing Page
-![alt text](Landing.png)
+<img width="1873" height="893" alt="Landing" src="https://github.com/user-attachments/assets/64edbc8f-5f71-4158-b49f-d28496bbda89" />
+
 
 ### SQL Query Mode
-![alt text](Sql.png)
+<img width="1842" height="917" alt="Sql" src="https://github.com/user-attachments/assets/7409069f-c6ec-40de-917c-6a2c8ab94c54" />
 
 ### Python Code Mode
-![alt text](Python.png)
+<img width="1018" height="782" alt="Python" src="https://github.com/user-attachments/assets/152264e0-5d95-4e90-ae2a-1fd17982de3b" />
 
 ### AI Insights Mode
-![alt text](Insights.png)
+<img width="1883" height="920" alt="Insights" src="https://github.com/user-attachments/assets/a535bb71-bac6-4d0b-a573-969f5e11af62" />
 
 ---
 
