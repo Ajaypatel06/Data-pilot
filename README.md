@@ -1,70 +1,141 @@
-# Getting Started with Create React App
+# ⚡ DataPilot — AI Analytics Engine
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An AI-powered analytics platform with natural language SQL generation, Python code generation, multi-file support, and live MySQL/PostgreSQL connection — built with React and Claude API.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+| Mode | What it does |
+|---|---|
+| 💡 AI Insights | Plain English → Business insight + chart + recommendation |
+| 🗃️ SQL Query | Plain English → MySQL & PostgreSQL queries with results |
+| ⬡ Python Code | Plain English → Runnable Pandas code + Open in Colab |
+| 🗄 Live Database | Connect MySQL or PostgreSQL directly |
+| 📁 Multi-file | CSV, Excel, JSON, TSV — switch between datasets |
+| ↓ Export | CSV export on every result |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🖥️ Screenshots
 
-### `npm test`
+### Landing Page
+![alt text](Landing.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### SQL Query Mode
+![alt text](Sql.png)
 
-### `npm run build`
+### Python Code Mode
+![alt text](Python.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### AI Insights Mode
+![alt text](Insights.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠️ Tech Stack
 
-### `npm run eject`
+- **React 18** — Frontend
+- **Anthropic Claude Sonnet** — AI engine
+- **Recharts** — Charts
+- **SheetJS (xlsx)** — Excel parsing
+- **Node.js + Express** — Backend proxy for DB connections
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📦 Frontend Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+git clone https://github.com/Ajaypatel06/datapilot.git
+cd datapilot
+npm install
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Opens at `http://localhost:3000`
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🗄️ Backend Setup (MySQL / PostgreSQL only)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+cd backend
+npm install
+node server.js
+```
 
-### Code Splitting
+Runs at `http://localhost:3001`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Then in DataPilot → Connect DB → enter `http://localhost:3001`
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🗂️ Project Structure
 
-### Making a Progressive Web App
+```
+datapilot/
+├── src/
+│   └── DataPilot.jsx
+├── backend/
+│   ├── server.js
+│   └── package.json
+├── screenshots/
+│   ├── landing.png
+│   ├── sql.png
+│   ├── python.png
+│   └── insights.png
+├── screenshots/
+│   └── architecture.svg
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 🏗️ Architecture
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![Architecture](screenshots/architecture.svg)
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 💡 How to Use
 
-### `npm run build` fails to minify
+1. Click **Launch App →** on the landing page
+2. Upload a file or connect a database
+3. Choose a mode — AI Insights / SQL Query / Python Code
+4. Type your question in plain English
+5. Get instant results
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Example questions:
+- *"Which month had the highest revenue?"*
+- *"Show total orders grouped by month"*
+- *"Calculate month-over-month growth rate"*
+- *"Find months where returns were above average"*
+
+---
+
+## 🔐 File Types Supported
+
+| Format | Extension |
+|---|---|
+| Excel | `.xlsx` `.xls` |
+| CSV | `.csv` |
+| JSON | `.json` |
+| TSV | `.tsv` |
+| Text | `.txt` |
+
+---
+
+## 🧑‍💻 Author
+
+**Ajay Patel** — Data & Analytics Developer
+- GitHub: [github.com/Ajaypatel06](https://github.com/Ajaypatel06)
+- LinkedIn: [linkedin.com/in/ajay-patel](https://linkedin.com/in/ajay-patel)
+
+---
+
+## 📄 License
+
+MIT

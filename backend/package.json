@@ -1,0 +1,15 @@
+{
+  "name": "datapilot-backend",
+  "version": "1.0.0",
+  "description": "DataPilot backend proxy for MySQL and PostgreSQL connections",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.0",
+    "pg": "^8.11.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
