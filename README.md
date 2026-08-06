@@ -73,31 +73,41 @@ Then in DataPilot → Connect DB → enter `http://localhost:3001`
 
 ## 🗂️ Project Structure
 
-```
 datapilot/
 ├── src/
-│   └── DataPilot.jsx
+│ └── DataPilot.jsx
 ├── backend/
-│   ├── server.js
-│   └── package.json
-├── screenshots/
-│   ├── landing.png
-│   ├── sql.png
-│   ├── python.png
-│   └── insights.png
-├── screenshots/
-│   └── architecture.svg
+│ ├── server.js
+│ └── package.json
+├── Screenshot/
+│ ├── Landing.png
+│ ├── Sql.png
+│ ├── Python.png
+│ └── Insights.png
 ├── .env.example
+├── backend/.env.example
 ├── .gitignore
 ├── package.json
 └── README.md
-```
+
 
 ---
 
 ## 🏗️ Architecture
 
-![Architecture](screenshots/architecture.svg)
+React frontend (DataPilot.jsx)
+│
+├──/analyze──────► Node/Express backend (backend/server.js) ──► Claude API
+│ holds ANTHROPIC_API_KEY server-side,
+│ never bundled into the client build
+│
+└──/connect,/table,/query──► same backend ──► MySQL / PostgreSQL
+
+
+Both the AI analysis calls and the live database calls go through the same
+backend proxy. This keeps the Anthropic key and any DB credentials out of
+the browser entirely — the frontend never talks to `api.anthropic.com` or
+to a database directly.
 
 ---
 
@@ -129,9 +139,32 @@ datapilot/
 
 ---
 
+## 🧪 Eval Results
+
+The SQL-generation prompt is tested against a fixed set of 15 questions run
+on the app's real sample dataset, scored on structural correctness
+(correct aggregate function, `GROUP BY`, `WHERE`, `ORDER BY`, `LIMIT`
+presence for each question's intent).
+
+**v1 (baseline): 11/15** (2/6 on the specific "total X by Y" pattern below)
+Most failures traced to one root cause: on data that's already one row per
+category (e.g. one row per month), "total X by Y" questions were answered
+with `ORDER BY` instead of `SUM()` + `GROUP BY` — structurally correct-looking
+SQL that would silently return wrong, unaggregated numbers against a real
+multi-row-per-month table.
+
+**v2 (patched): 14/15** (5/6 on the same pattern)
+Fix: one line added to the system prompt requiring the matching aggregate
+function whenever a question asks for a total/sum/average broken down by a
+category, even if the sample rows look pre-aggregated. The one remaining
+failure in both versions is a genuinely ambiguous question ("average X per
+Y" on data that's already one row per Y) rather than a regression.
+
+---
+
 ## 🧑‍💻 Author
 
-**Ajay Patel** — Data & Analytics Developer
+**Ajay Patel** — Data Analyst
 - GitHub: [github.com/Ajaypatel06](https://github.com/Ajaypatel06)
 - LinkedIn: [linkedin.com/in/ajay-patel](https://linkedin.com/in/ajay-patel)
 
