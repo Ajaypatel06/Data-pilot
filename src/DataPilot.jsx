@@ -656,8 +656,13 @@ Respond ONLY with valid JSON:
 {"headline":"punchy finding","insight":"2-3 sentence insight","recommendation":"one action","chart":{"type":"bar","title":"...","xKey":"...","yKeys":["col1","col2"],"data":[max 10 rows]}}`;
 
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2500,system:sys,messages:[{role:"user",content:`Columns:${colStr}\nData:${preview}\nRows:${data.length}\nQuestion:${q}`}]})});
-      const api=await res.json(); const txt=api.content?.find(b=>b.type==="text")?.text||""; if(!txt) throw new Error("Empty response");
+      // Routed through the backend proxy so the Anthropic key never reaches
+      // the browser bundle. Reuses the same proxy URL as the DB connection
+      // (defaults to http://localhost:3001), overridable via REACT_APP_BACKEND_URL.
+      const backendUrl=(dbCfg&&dbCfg.proxy)||process.env.REACT_APP_BACKEND_URL||"http://localhost:3001";
+      const res=await fetch(`${backendUrl}/analyze`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:sys,question:`Columns:${colStr}\nData:${preview}\nRows:${data.length}\nQuestion:${q}`,model:"claude-sonnet-4-20250514",max_tokens:2500})});
+      const api=await res.json(); if(!res.ok) throw new Error(api.error||"Analysis request failed");
+      const txt=api.content?.find(b=>b.type==="text")?.text||""; if(!txt) throw new Error("Empty response");
       let parsed;
       if(isPY){
         const ex=tag=>{ const m=txt.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`)); return m?m[1].trim():""; };
