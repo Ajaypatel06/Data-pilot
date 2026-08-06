@@ -1,12 +1,16 @@
 // DataPilot Backend Proxy
-// Connects DataPilot frontend to MySQL or PostgreSQL
+// Connects DataPilot frontend to MySQL or PostgreSQL, and proxies the
+// Claude API call so the Anthropic key never reaches the browser bundle.
 //
 // SETUP:
-//   npm install express cors pg mysql2
+//   npm install express cors pg mysql2 dotenv
+//   cp .env.example .env   → set ANTHROPIC_API_KEY
 //   node server.js
 //
 // Then open DataPilot → "Connect DB" → enter http://localhost:3001
+// (the same proxy URL is used automatically for the AI analysis calls)
 
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
@@ -50,6 +54,48 @@ async function getMysqlConnection(config) {
 // Health check
 app.get("/", (req, res) => {
   res.json({ status: "DataPilot proxy running", version: "1.0" });
+});
+
+// ─── AI analysis proxy ───────────────────────────────────────────────────────
+// Forwards the SQL/Python/Insights prompts to Claude. The key lives only in
+// this process's environment (ANTHROPIC_API_KEY) and is never sent to,
+// or bundled into, the frontend.
+app.post("/analyze", async (req, res) => {
+  const { system, question, model, max_tokens } = req.body;
+
+  if (!system || !question) {
+    return res.status(400).json({ error: "Missing required fields: system, question" });
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: "ANTHROPIC_API_KEY is not set on the server (see .env.example)" });
+  }
+
+  try {
+    const r = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: model || "claude-sonnet-4-20250514",
+        max_tokens: max_tokens || 2500,
+        system,
+        messages: [{ role: "user", content: question }]
+      })
+    });
+
+    const data = await r.json();
+    if (!r.ok) {
+      return res.status(r.status).json({ error: data.error?.message || "Anthropic API error" });
+    }
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Connect and list tables
