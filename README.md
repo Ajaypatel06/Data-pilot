@@ -166,7 +166,7 @@ Y" on data that's already one row per Y) rather than a regression.
 
 **Ajay Patel** — Data Analyst
 - GitHub: [github.com/Ajaypatel06](https://github.com/Ajaypatel06)
-- LinkedIn: [linkedin.com/in/ajay-patel](https://linkedin.com/in/ajay-patel)
+- - LinkedIn: [linkedin.com/in/ajay-patel-006may](https://www.linkedin.com/in/ajay-patel-006may/)
 
 ---
 
